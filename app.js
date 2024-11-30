@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const exphbs = require('express-handlebars');
 require('dotenv').config();
-const stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 var app = express();
 
@@ -19,14 +19,14 @@ app.use(express.json({}));
 /**
  * Home route
  */
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.render('index');
 });
 
 /**
  * Checkout route
  */
-app.get('/checkout', function(req, res) {
+app.get('/checkout', async function (req, res) {
   // Just hardcoding amounts here to avoid using a database
   const item = req.query.item;
   let title, amount, error;
@@ -34,33 +34,42 @@ app.get('/checkout', function(req, res) {
   switch (item) {
     case '1':
       title = "The Art of Doing Science and Engineering"
-      amount = 2300      
+      amount = 2300
       break;
     case '2':
       title = "The Making of Prince of Persia: Journals 1985-1993"
       amount = 2500
-      break;     
+      break;
     case '3':
       title = "Working in Public: The Making and Maintenance of Open Source"
-      amount = 2800  
-      break;     
+      amount = 2800
+      break;
     default:
       // Included in layout view, feel free to assign error
-      error = "No item selected"      
+      error = "No item selected"
       break;
   }
+  // Create PaymentIntent to make post request to Stripe API
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount,
+    currency: 'aud',
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  });
 
   res.render('checkout', {
     title: title,
     amount: amount,
-    error: error
+    error: error,
+    client_secret: paymentIntent.client_secret
   });
 });
 
 /**
  * Success route
  */
-app.get('/success', function(req, res) {
+app.get('/success', function (req, res) {
   res.render('success');
 });
 
@@ -70,3 +79,5 @@ app.get('/success', function(req, res) {
 app.listen(3000, () => {
   console.log('Getting served on port 3000');
 });
+
+
