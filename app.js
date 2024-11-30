@@ -62,7 +62,8 @@ app.get('/checkout', async function (req, res) {
     title: title,
     amount: amount,
     error: error,
-    client_secret: paymentIntent.client_secret
+    client_secret: paymentIntent.client_secret,
+    publishable_key: process.env.STRIPE_PUBLISHABLE_KEY
   });
 });
 
