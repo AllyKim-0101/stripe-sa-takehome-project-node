@@ -19,7 +19,7 @@
             <label for="email">Email address</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="you@email.com">
           </div>
-          <div class="mt-20 text-center text-secondary border-placeholder">
+          <div class="mt-20 text-center text-secondary border-placeholder" id="payment-element">
             Add Stripe Element here!
           </div>
           <div class="mt-20">
@@ -30,3 +30,23 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+// Set your publishable key: remember to change this to your live publishable key in production
+// See your keys here: https://dashboard.stripe.com/apikeys
+const stripe = Stripe('pk_test_51QNAdRHQPmYvsyfxFplGjnjuRvjy0QJxL86jX5XLmqnvcmaR7i1UJ7bXbIyJDdBixJY8fJPkE1cHgUYL0UtGHkAI00iUTFFDlW');
+const options = {
+  clientSecret: '{{ client_secret }}',
+  // Fully customizable with appearance API.
+  appearance: {/*...*/},
+};
+
+// Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in a previous step
+const elements = stripe.elements(options);
+
+// Create and mount the Payment Element
+const paymentElementOptions = { layout: 'accordion'};
+const paymentElement = elements.create('payment', paymentElementOptions);
+paymentElement.mount('#payment-element');
+
+</script>
