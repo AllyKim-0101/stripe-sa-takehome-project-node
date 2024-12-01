@@ -14,33 +14,33 @@
 
 <script>
   // Initialize Stripe.js using your publishable key
-const stripe = Stripe('{{ publishable_key }}');
+  const stripe = Stripe('{{ publishable_key }}');
 
-// Retrieve the "payment_intent_client_secret" query parameter appended to
-// your return_url by Stripe.js
-const clientSecret = new URLSearchParams(window.location.search).get(
-  'payment_intent_client_secret'
-);
+  // Retrieve the "payment_intent_client_secret" query parameter appended to
+  // your return_url by Stripe.js
+  const clientSecret = new URLSearchParams(window.location.search).get(
+    'payment_intent_client_secret'
+  );
 
-// Retrieve the PaymentIntent
-stripe.retrievePaymentIntent(clientSecret).then(({paymentIntent}) => {
-  const message = document.querySelector('#message')
+  // Retrieve the PaymentIntent
+  stripe.retrievePaymentIntent(clientSecret).then(({paymentIntent}) => {
+    const message = document.querySelector('#message')
 
-  // Inspect the PaymentIntent `status` to indicate the status of the payment
-  // to your customer.
-  //
-  // Some payment methods will [immediately succeed or fail][0] upon
-  // confirmation, while others will first enter a `processing` state.
-  //
-  // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
-  switch (paymentIntent.status) {
-    case 'succeeded':
+    // Inspect the PaymentIntent `status` to indicate the status of the payment
+    // to your customer.
+    //
+    // Some payment methods will [immediately succeed or fail][0] upon
+    // confirmation, while others will first enter a `processing` state.
+    //
+    // [0]: https://stripe.com/docs/payments/payment-methods#payment-notification
+    switch (paymentIntent.status) {
+      case 'succeeded':
       message.innerText = "Success! Payment received"
       const intentId = paymentIntent.id;
       const amount = paymentIntent.amount;
 
       // Display intent ID and amount
-      message.innerHTML += `<br>Intent ID: ${intentId}<br>Amount: ${amount}`;
+      message.innerHTML += `<br><br>Payment Intent ID: ${intentId}<br>Amount: $${(amount / 100).toFixed(2)}`;
       break;
 
     case 'processing':
