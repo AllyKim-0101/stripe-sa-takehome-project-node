@@ -71,7 +71,9 @@ app.get('/checkout', async function (req, res) {
  * Success route
  */
 app.get('/success', function (req, res) {
-  res.render('success');
+  res.render('success', {
+    publishable_key: process.env.STRIPE_PUBLISHABLE_KEY
+  });
 });
 
 /**
