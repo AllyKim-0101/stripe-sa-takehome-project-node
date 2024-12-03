@@ -17,7 +17,7 @@
    npm install
 ```
 
-2. Replace API keys with your Stripe account's test API keys in the .env file
+2. Rename sample.env to .env and replace placeholder keys with your Stripe account's test API keys.
 
    Note: You can manage payment methods and retrieve test API keys from the [Stripe Dashboard](https://dashboard.stripe.com/).
 
