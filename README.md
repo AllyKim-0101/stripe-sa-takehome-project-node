@@ -11,8 +11,8 @@
 1. Clone the repository and install dependencies:
 
 ```bash
-   git clone https://github.com/mattmitchell6/sa-takehome-project-node
-   cd sa-takehome-project-node
+   git clone https://github.com/AllyKim-0101/stripe-sa-takehome-project-node
+   cd stripe-sa-takehome-project-node
 
    npm install
 ```
